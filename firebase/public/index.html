@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kalender</title>
+    <meta name="ting" content="calendar-pwa" />
+    <link href="styles/bootstrap-combined.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="screen" href="styles/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" type="text/css" href="styles/inline.css" />
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
+
+    <!-- CODELAB: Add link rel manifest -->
+    <link rel="manifest" href="/manifest.json" />
+    <!-- CODELAB: Add iOS meta tags and icons -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="Calendar PWA" />
+    <link rel="apple-touch-icon" href="/images/icons/icon-152x152.png" />
+    <!-- CODELAB: Add description here -->
+    <meta name="description" content="A calendar app" />
+    <!-- CODELAB: Add meta theme-color -->
+    <meta name="theme-color" content="#2F3BA2" />
+</head>
+
+<body>
+    <header class="header">
+        <div class="container" onclick="openNav()">
+            <div class="bar1"></div>
+            <div class="bar2"></div>
+            <div class="bar3"></div>
+        </div>
+        <h1>
+
+        </h1>
+        <button id="butInstall" aria-label="Install" hidden></button>
+        <button id="butRefresh" aria-label="Refresh"></button>
+    </header>
+    <div id="mySidenav" class="sidenav">
+        <a class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="#">About</a>
+        <a href="#">Services</a>
+        <a href="#">Clients</a>
+        <a href="#" onclick="openSettings()">Einstellungen</a>
+    </div>
+    <main class="main">
+        <div class="container">
+            <div class="calendar dark">
+                <div class="calendar_header">
+                    <h1 id="welcome" class="header_title">Willkommen<span class="username"></span>!</h1>
+                    <p>Sieh dir an, was so los ist.</p>
+                </div>
+                <div class="calendar_plan">
+                    <div class="cl_plan">
+                        <div class="cl_title">Heute</div>
+                        <div class="cl_copy"><span id="today"> </span></div>
+                    </div>
+                </div>
+                <div class="calendar_events">
+                    <p class="ce_title">
+                        Termine für den
+                        <span id="other_day"> </span>
+                    </p>
+                    <div class="event_item">
+                        <div class="ei_Dot dot_active"></div>
+                        <button class="remove-appointment">&times;</button>
+                        <div class="ei_Title">10:30 am</div>
+                        <div class="ei_Copy">Monday briefing with the team</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button id="butAdd" class="fab" aria-label="Add" hidden>
+            <span class="icon add"></span>
+        </button>
+
+        <div id="calendar-template" class="calendar-card" hidden>
+            <div class="card-spinner">
+                <svg viewbox="0 0 32 32" width="32" height="32">
+                    <circle cx="16" cy="16" r="14" fill="none"></circle>
+                </svg>
+            </div>
+            <button class="remove-appointment">&times;</button>
+            <div class="appointment-key" hidden></div>
+            <div class="card-last-updated" hidden></div>
+            <div class="location">&nbsp;</div>
+            <div class="date">&nbsp;</div>
+            <div class="description">&nbsp;</div>
+            <div class="future">
+                <div class="oneday">
+                    <div class="date"></div>
+                    <div class="icon"></div>
+                    <div class="temp-high"><span class="value"></span>°</div>
+                    <div class="temp-low"><span class="value"></span>°</div>
+                </div>
+                <div class="oneday">
+                    <div class="date"></div>
+                    <div class="icon"></div>
+                    <div class="temp-high"><span class="value"></span>°</div>
+                    <div class="temp-low"><span class="value"></span>°</div>
+                </div>
+                <div class="oneday">
+                    <div class="date"></div>
+                    <div class="icon"></div>
+                    <div class="temp-high"><span class="value"></span>°</div>
+                    <div class="temp-low"><span class="value"></span>°</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="event_item_template" hidden>
+        <div class="ei_Dot"><span class="value"> </span></div>
+        <button class="remove-appointment">&times;</button>
+        <div class="ei_Title"><span class="value"> </span></div>
+        <div class="ei_Copy ei_name"><span class="value"> </span></div>
+        <div class="ei_Copy ei_description"><span class="value"> </span></div>
+    </div>
+
+    <div id="settingsDialogContainer">
+        <div class="dialog">
+            <div class="dialog-title">Einstellungen</div>
+            <div class="dialog-body">
+                <span>Name ändern:</span>
+                <div id="change_displayname">
+                    <input id="change_displayname_input" type="text"></input>
+                </div>
+            </div>
+            <span id="settingsError" class="error"></span>
+            <div class="dialog-buttons">
+                <button id="butDialogCancelSettings" class="button">Abbruch</button>
+                <button id="butDialogSaveSettings" class="button">Speichern</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="loginDialogContainer">
+        <div class="dialog">
+            <div class="dialog-title">Registrieren oder Einloggen</div>
+            <div class="dialog-body">
+                <span>Name (bei Registrierung):</span>
+                <div id="displayname">
+                    <input id="displayname_input" type="text"></input>
+                </div>
+                <span>E-Mail:</span>
+                <div id="email">
+                    <input id="email_input" type="email"></input>
+                </div>
+                <span>Passwort:</span>
+                <div id="password">
+                    <input id="password_input" type="password"></input>
+                </div>
+                <span id="loginError" class="error"></span>
+            </div>
+            <div class="dialog-buttons">
+                <button id="butDialogSignup" class="button">Registrieren</button>
+                <button id="butDialogLogin" class="button">Einloggen</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="addDialogContainer">
+        <div class="dialog">
+            <div class="dialog-title">Neuen Termin hinzufügen</div>
+            <div class="dialog-body">
+                <select id="selectAppointmentToAdd" aria-label="Appointment to add">
+                    <option value="28.6472799,76.8130727">Dehli, India</option>
+                    <option value="-5.7759362,106.1174957">Jakarta, Indonesia</option>
+                    <option value="51.5287718,-0.2416815">London, UK</option>
+                    <option value="40.6976701,-74.2598666">New York, USA</option>
+                    <option value="48.8589507,2.2770202">Paris, France</option>
+                    <option value="-64.8251018,-63.496847">Port Lockroy, Antarctica</option>
+                    <option value="37.757815,-122.5076401">San Francisco, USA</option>
+                    <option value="31.2243085,120.9162955">Shanghai, China</option>
+                    <option value="35.6735408,139.5703032">Tokyo, Japan</option>
+                </select>
+                <span>Was hast du vor?</span>
+                <div>
+                    <input id="inputDescription" type="text"></input>
+                </div>
+                <span>Von:</span>
+                <div id="datetimepickerFrom" class="input-append date">
+                    <input id="inputTimeFrom" type="text"></input>
+                    <span class="add-on">
+                        <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+                    </span>
+                </div>
+                <span>Bis:</span>
+                <div id="datetimepickerTo" class="input-append date">
+                    <input id="inputTimeTo" type="text"></input>
+                    <span class="add-on">
+                        <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="dialog-buttons">
+                <button id="butDialogCancel" class="button">Abbruch</button>
+                <button id="butDialogAdd" class="button">Hinzufügen</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="scripts/extern/jquery.min.js">
+    </script>
+    <script type="text/javascript" src="scripts/extern/bootstrap.min.js">
+    </script>
+    <script type="text/javascript" src="scripts/extern/bootstrap-datetimepicker.js">
+    </script>
+    <script type="text/javascript" src="scripts/extern/bootstrap-datetimepicker-de.js">
+    </script>
+    <script type="text/javascript">
+        $('#datetimepickerFrom').datetimepicker({
+            format: 'dd.MM.yyyy hh:mm',
+            locale: 'de'
+        });
+        $('#datetimepickerTo').datetimepicker({
+            format: 'dd.MM.yyyy hh:mm',
+            locale: 'de'
+        });
+    </script>
+    <script>
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, "0");
+        const monthNames = [
+            "Januar",
+            "Februar",
+            "März",
+            "April",
+            "Mai",
+            "Juni",
+            "Juli",
+            "August",
+            "September",
+            "Oktober",
+            "November",
+            "Dezember"
+        ];
+        var mm = String(today.getMonth() + 1).padStart(2, "0");
+        var yyyy = today.getFullYear();
+        var today_str = dd + "." + mm + "." + yyyy;
+        document.getElementById("other_day").textContent = today_str;
+        mm = monthNames[today.getMonth()];
+        today_str = dd + ". " + mm + " " + yyyy;
+        document.getElementById("today").textContent = today_str;
+    </script>
+    <script src="/scripts/extern/luxon-1.11.4.js"></script>
+
+
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="/__/firebase/7.11.0/firebase-app.js"></script>
+
+    <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+    <script src="/__/firebase/7.11.0/firebase-analytics.js"></script>
+
+    <!-- Add Firebase products that you want to use -->
+    <script src="/__/firebase/7.11.0/firebase-auth.js"></script>
+    <script src="/__/firebase/7.11.0/firebase-firestore.js"></script>
+    <script src="/__/firebase/init.js"></script>
+
+    <script src="/scripts/nav_functions.js"></script>
+    <script src="/scripts/my_db_functions.js"></script>
+    <script src="/scripts/my_auth_functions.js"></script>
+    <script src="/scripts/app.js"></script>
+    <!-- CODELAB: Add the install script here -->
+    <script src="/scripts/install.js"></script>
+    <script>
+        // CODELAB: Register service worker.
+        if ("serviceWorker" in navigator) {
+            window.addEventListener("load", () => {
+                navigator.serviceWorker.register("/service-worker.js").then(reg => {
+                    console.log("Service worker registered.", reg);
+                });
+            });
+        }
+    </script>
+
+    <!---->
+</body>
+
+</html>
