@@ -62,6 +62,8 @@
                     <p class="ce_title">
                         Termine für den
                         <span id="other_day"> </span>
+                        <button class="next-day">></button>
+                        <button class="prev-day"><</button>
                     </p>
                     <div class="event_item">
                         <div class="ei_Dot dot_active"></div>
@@ -220,31 +222,6 @@
             format: 'dd.MM.yyyy hh:mm',
             locale: 'de'
         });
-    </script>
-    <script>
-        var today = new Date();
-        var dd = String(today.getDate()).padStart(2, "0");
-        const monthNames = [
-            "Januar",
-            "Februar",
-            "März",
-            "April",
-            "Mai",
-            "Juni",
-            "Juli",
-            "August",
-            "September",
-            "Oktober",
-            "November",
-            "Dezember"
-        ];
-        var mm = String(today.getMonth() + 1).padStart(2, "0");
-        var yyyy = today.getFullYear();
-        var today_str = dd + "." + mm + "." + yyyy;
-        document.getElementById("other_day").textContent = today_str;
-        mm = monthNames[today.getMonth()];
-        today_str = dd + ". " + mm + " " + yyyy;
-        document.getElementById("today").textContent = today_str;
     </script>
     <script src="/scripts/extern/luxon-1.11.4.js"></script>
 

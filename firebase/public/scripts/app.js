@@ -61,6 +61,8 @@ function getAppointmentCard(id, name, description, from, to) {
   newCard.className = "event_item";
   if (from[0] === to[0]) {
     newCard.querySelector(".ei_Title").textContent = `${from[1]} Uhr bis ${to[1]} Uhr`;
+  } else {
+    newCard.querySelector(".ei_Title").textContent = `${from[0]} ${from[1]} Uhr bis ${to[0]} ${to[1]} Uhr`;
   }
   newCard.querySelector(".ei_name").textContent = `${name}`;
   newCard.querySelector(".ei_description").textContent = `${description}`;
@@ -273,22 +275,30 @@ function setUpTime() {
     "November",
     "Dezember"
   ];
-  var mm = String(today.getMonth() + 1).padStart(2, "0");
+  var mm = monthNames[today.getMonth()];
   var yyyy = today.getFullYear();
-  var today_str = dd + "." + mm + "." + yyyy;
-  document.getElementById("other_day").textContent = today_str;
-  mm = monthNames[today.getMonth()];
-  today_str = dd + ". " + mm + " " + yyyy;
+  const today_str = dd + ". " + mm + " " + yyyy;
   document.getElementById("today").textContent = today_str;
+  setCurrentDay(0);
 }
 
 function setCurrentDay(i) {
-  currentDay
-  var dd = String(today.getDate()).padStart(2, "0");
-  var mm = String(today.getMonth() + 1).padStart(2, "0");
-  var yyyy = today.getFullYear();
+  currentDay.setDate(currentDay.getDate() + i);
+  var dd = String(currentDay.getDate()).padStart(2, "0");
+  var mm = String(currentDay.getMonth() + 1).padStart(2, "0");
+  var yyyy = currentDay.getFullYear();
   var day_str = dd + "." + mm + "." + yyyy;
   document.getElementById("other_day").textContent = day_str;
+}
+
+function getNextDay() {
+  setCurrentDay(1);
+  getAppointments(currentDay);
+}
+
+function getPrevDay() {
+  setCurrentDay(-1);
+  getAppointments(currentDay);
 }
 
 /**
@@ -324,6 +334,12 @@ function init() {
   document
     .getElementById("butDialogSaveSettings")
     .addEventListener("click", saveSettings);
+  document
+    .querySelector(".next-day")
+    .addEventListener("click", getNextDay);
+  document
+    .querySelector(".prev-day")
+    .addEventListener("click", getPrevDay);
 }
 
 init();

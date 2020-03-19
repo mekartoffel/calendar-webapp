@@ -311,7 +311,7 @@
    position: relative;
  }
 
- .remove-appointment {
+ .remove-appointment, .next-day, .prev-day {
    background-color: transparent;
    color: #bbb;
    border: none;

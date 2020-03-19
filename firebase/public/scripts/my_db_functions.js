@@ -16,10 +16,10 @@ function pushAppointment(description, from, to) {
 }
 
 function isTodays(currentDay, data) {
+    console.log(currentDay)
     var dd = String(currentDay.getDate()).padStart(2, "0");
     var mm = String(currentDay.getMonth() + 1).padStart(2, "0");
     var yyyy = currentDay.getFullYear();
-    const currentDayDate = new Date(`${yyyy}-${mm}-${dd}`);
     const fromD = data.from[0].split('.')[0];
     const fromM = data.from[0].split('.')[1];
     const fromY = data.from[0].split('.')[2];
@@ -28,11 +28,14 @@ function isTodays(currentDay, data) {
     const toM = data.to[0].split('.')[1];
     const toY = data.to[0].split('.')[2];
     const toDate = new Date(`${toY}-${toM}-${toD}`);
-    if (currentDayDate === fromDate || currentDayDate === toDate) {
+    console.log(`now: ${yyyy}-${mm}-${dd}\nfrom: ${fromY}-${fromM}-${fromD}\nto: ${toY}-${toM}-${toD}`)
+    if (`${yyyy}-${mm}-${dd}` === `${fromY}-${fromM}-${fromD}` || `${yyyy}-${mm}-${dd}` === `${toY}-${toM}-${toD}`) {
         //it's the first or last day
+        console.log('1')
         return true;
-    } else if ((toDate.getTime()-fromDate.getTime())>(toDate.getTime()-fromDate.getTime())) {
+    } else if ((toDate.getTime() - fromDate.getTime()) > (currentDay.getTime() - fromDate.getTime()) && (currentDay.getTime() - fromDate.getTime() > 0)) {
         // It's a day in between
+        console.log('2')
         return true;
     }
 
@@ -40,7 +43,7 @@ function isTodays(currentDay, data) {
 }
 
 function getAppointments(d) {
-    db.collection("appointments").get().then( querySnapshot => {
+    db.collection("appointments").get().then(querySnapshot => {
         querySnapshot.forEach(doc => {
             const data = doc.data();
             const id = doc.id;
@@ -49,8 +52,13 @@ function getAppointments(d) {
             const from = data.from;
             const to = data.to;
             console.log(`${id}: ${description}`);
-            if (isTodays(d,data)) {
+            if (isTodays(d, data)) {
                 getAppointmentCard(id, name, description, from, to);
+            } else {
+                const card = document.getElementById(id);
+                if (card) {
+                    card.remove();
+                }
             }
         })
     }).catch(error => {
