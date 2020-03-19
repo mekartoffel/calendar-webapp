@@ -16,7 +16,6 @@ function pushAppointment(description, from, to) {
 }
 
 function isTodays(currentDay, data) {
-    console.log(currentDay)
     var dd = String(currentDay.getDate()).padStart(2, "0");
     var mm = String(currentDay.getMonth() + 1).padStart(2, "0");
     var yyyy = currentDay.getFullYear();
@@ -28,14 +27,11 @@ function isTodays(currentDay, data) {
     const toM = data.to[0].split('.')[1];
     const toY = data.to[0].split('.')[2];
     const toDate = new Date(`${toY}-${toM}-${toD}`);
-    console.log(`now: ${yyyy}-${mm}-${dd}\nfrom: ${fromY}-${fromM}-${fromD}\nto: ${toY}-${toM}-${toD}`)
     if (`${yyyy}-${mm}-${dd}` === `${fromY}-${fromM}-${fromD}` || `${yyyy}-${mm}-${dd}` === `${toY}-${toM}-${toD}`) {
         //it's the first or last day
-        console.log('1')
         return true;
     } else if ((toDate.getTime() - fromDate.getTime()) > (currentDay.getTime() - fromDate.getTime()) && (currentDay.getTime() - fromDate.getTime() > 0)) {
         // It's a day in between
-        console.log('2')
         return true;
     }
 
