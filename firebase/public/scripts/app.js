@@ -9,7 +9,8 @@ const calendarApp = {
   selectedAppointments: {},
   addDialogContainer: document.getElementById("addDialogContainer"),
   loginDialogContainer: document.getElementById("loginDialogContainer"),
-  settingsDialogContainer: document.getElementById("settingsDialogContainer")
+  settingsDialogContainer: document.getElementById("settingsDialogContainer"),
+  editDialogContainer: document.getElementById("editDialogContainer")
 };
 
 function showDisplayname(displayName) {
@@ -70,6 +71,9 @@ function getAppointmentCard(id, name, description, from, to) {
   newCard
     .querySelector(".remove-appointment")
     .addEventListener("click", removeAppointment);
+  newCard
+    .querySelector(".icon-edit")
+    .addEventListener("click", openEditDialog);
   document.querySelector(".calendar_events").appendChild(newCard);
   newCard.removeAttribute("hidden");
   return newCard;
@@ -340,6 +344,12 @@ function init() {
   document
     .querySelector(".prev-day")
     .addEventListener("click", getPrevDay);
+  document
+    .getElementById("butDialogCancelEdit")
+    .addEventListener("click", toggleEditDialog);
+  document
+    .getElementById("butDialogSaveEdit")
+    .addEventListener("click", editAppointment);
 }
 
 init();

@@ -26,6 +26,7 @@
    flex-direction: column;
    flex-wrap: nowrap;
    justify-content: flex-start;
+   overflow-y: auto;
  }
 
  /**
@@ -146,58 +147,6 @@
    background-image: url("/images/add.svg");
  }
 
- .icon.clear-day {
-   background-image: url("/images/clear-day.svg");
- }
-
- .icon.clear-night {
-   background-image: url("/images/clear-night.svg");
- }
-
- .icon.rain {
-   background-image: url("/images/rain.svg");
- }
-
- .icon.snow {
-   background-image: url("/images/snow.svg");
- }
-
- .icon.sleet {
-   background-image: url("/images/sleet.svg");
- }
-
- .icon.wind {
-   background-image: url("/images/wind.svg");
- }
-
- .icon.fog {
-   background-image: url("/images/fog.svg");
- }
-
- .icon.cloudy {
-   background-image: url("/images/cloudy.svg");
- }
-
- .icon.partly-cloudy-day {
-   background-image: url("/images/partly-cloudy-day.svg");
- }
-
- .icon.partly-cloudy-night {
-   background-image: url("/images/partly-cloudy-night.svg");
- }
-
- .icon.hail {
-   background-image: url("/images/hail.svg");
- }
-
- .icon.thunderstorm {
-   background-image: url("/images/thunderstorm.svg");
- }
-
- .icon.tornado {
-   background-image: url("/images/tornado.svg");
- }
-
  /**
    * Main body
    */
@@ -210,7 +159,7 @@
  }
 
  .main .fab {
-   background-color: #3f51b5;
+   background-color: #000011;
    border-radius: 50%;
    bottom: 1rem;
    height: 56px;
@@ -231,7 +180,7 @@
    * Add dialog
    */
 
- #addDialogContainer, #loginDialogContainer, #settingsDialogContainer {
+ .dialogContainer {
    background: rgba(0, 0, 0, 0.57);
    height: 100%;
    left: 0;
@@ -244,7 +193,7 @@
    will-change: opacity;
  }
 
- #addDialogContainer.visible, #loginDialogContainer.visible, #settingsDialogContainer.visible {
+ .dialogContainer.visible {
    opacity: 1;
    pointer-events: auto;
  }
@@ -254,7 +203,8 @@
  }
 
  .dialog {
-   background: #fff;
+   background: #001;
+   color: #bbb;
    border-radius: 2px;
    box-shadow: 0 0 14px rgba(0, 0, 0, 0.24), 0 14px 28px rgba(0, 0, 0, 0.48);
    left: 50%;
@@ -285,12 +235,14 @@
  }
 
  .dialog-buttons {
+   color: #bbb !important;
    float: right;
    padding-bottom: 16px;
    padding-right: 17px !important;
  }
 
  .dialog .button {
+   color: #bbb !important;
    background: transparent;
    border: none;
    font-size: 14px;
@@ -311,7 +263,7 @@
    position: relative;
  }
 
- .remove-appointment, .next-day, .prev-day {
+ .remove-appointment, .next-day, .prev-day, .icon-edit {
    background-color: transparent;
    color: #bbb;
    border: none;
@@ -539,9 +491,9 @@
    font-weight: normal;
    line-height: 20px;
    text-align: center;
-   text-shadow: 0 1px 0 #fff;
-   background-color: #eee;
-   border: 1px solid #ccc;
+   text-shadow: 0 1px 0 #000;
+   background-color: #444;
+   border: 1px solid #222
  }
 
  input[type="text"] {
@@ -569,7 +521,6 @@
    background-color: #555;
    margin: 6px 0;
  }
-
 
  /* The side navigation menu */
 
@@ -638,4 +589,10 @@
    .sidenav a {
      font-size: 18px;
    }
+ }
+
+ .logout {
+   position: absolute;
+   bottom: 12px;
+   font-size: 20px !important;
  }

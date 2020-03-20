@@ -12,21 +12,18 @@
     <link rel="stylesheet" type="text/css" href="styles/inline.css" />
     <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
 
-    <!-- CODELAB: Add link rel manifest -->
     <link rel="manifest" href="/manifest.json" />
-    <!-- CODELAB: Add iOS meta tags and icons -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <meta name="apple-mobile-web-app-title" content="Calendar PWA" />
     <link rel="apple-touch-icon" href="/images/icons/icon-152x152.png" />
-    <!-- CODELAB: Add description here -->
     <meta name="description" content="A calendar app" />
-    <!-- CODELAB: Add meta theme-color -->
     <meta name="theme-color" content="#2F3BA2" />
 </head>
 
 <body>
     <header class="header">
+        <div class="swipe-area"></div>
         <div class="container" onclick="openNav()">
             <div class="bar1"></div>
             <div class="bar2"></div>
@@ -40,10 +37,10 @@
     </header>
     <div id="mySidenav" class="sidenav">
         <a class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="#">About</a>
-        <a href="#">Services</a>
-        <a href="#">Clients</a>
+        <a href="#">Woche</a>
+        <a href="#">Monat</a>
         <a href="#" onclick="openSettings()">Einstellungen</a>
+        <a class="logout">Ausloggen</a>
     </div>
     <main class="main">
         <div class="container">
@@ -65,8 +62,8 @@
                         <button class="next-day">></button>
                         <button class="prev-day"><</button>
                     </p>
-                    <div class="event_item">
-                        <div class="ei_Dot dot_active" hidden></div>
+                    <div class="event_item" hidden>
+                        <div class="ei_Dot dot_active"></div>
                         <button class="remove-appointment">&times;</button>
                         <div class="ei_Title">10:30 am</div>
                         <div class="ei_Copy">Monday briefing with the team</div>
@@ -117,12 +114,13 @@
     <div class="event_item_template" hidden>
         <div class="ei_Dot"><span class="value"> </span></div>
         <button class="remove-appointment">&times;</button>
+        <button class="icon-edit"></button>
         <div class="ei_Title"><span class="value"> </span></div>
         <div class="ei_Copy ei_name"><span class="value"> </span></div>
         <div class="ei_Copy ei_description"><span class="value"> </span></div>
     </div>
 
-    <div id="settingsDialogContainer">
+    <div id="settingsDialogContainer" class="dialogContainer">
         <div class="dialog">
             <div class="dialog-title">Einstellungen</div>
             <div class="dialog-body">
@@ -139,7 +137,7 @@
         </div>
     </div>
 
-    <div id="loginDialogContainer">
+    <div id="loginDialogContainer" class="dialogContainer">
         <div class="dialog">
             <div class="dialog-title">Registrieren oder Einloggen</div>
             <div class="dialog-body">
@@ -164,7 +162,8 @@
         </div>
     </div>
 
-    <div id="addDialogContainer">
+
+    <div id="addDialogContainer" class="dialogContainer">
         <div class="dialog">
             <div class="dialog-title">Neuen Termin hinzufügen</div>
             <div class="dialog-body">
@@ -204,6 +203,7 @@
             </div>
         </div>
     </div>
+
 
     <script type="text/javascript" src="scripts/extern/jquery.min.js">
     </script>

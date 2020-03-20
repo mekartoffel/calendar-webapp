@@ -70,3 +70,10 @@ function deleteAppointment(id) {
     })
 }
 
+function editAppointment(id) {
+    db.collection("appointments").doc(id).update({
+        description: description,
+        from: from.split(' '),
+        to: to.split(' ')
+    });
+}
