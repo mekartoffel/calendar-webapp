@@ -467,8 +467,13 @@
    color: #363b41;
  }
 
- .ei_Copy {
-   font-size: 12px;
+ .ei_name {
+  font-size: 15px;
+  margin-left: 27px;
+}
+
+ .ei_description {
+   font-size: 13px;
    margin-left: 27px;
  }
 

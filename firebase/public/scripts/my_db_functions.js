@@ -76,7 +76,8 @@ function editAppointment() {
     db.collection("appointments").doc(document.getElementById("butDialogSaveEdit").value).update({
         description: inputDescription,
         from: inputTimeFrom.split(' '),
-        to: inputTimeTo.split(' ')
+        to: inputTimeTo.split(' '),
+        with: [...document.getElementsByClassName("withWhomEdit")].filter(who => who.checked).map(who => who.value)
     }).then(() => {
         toggleEditDialog();
         db.collection("appointments").doc(document.getElementById("butDialogSaveEdit").value).get().then(doc => {
@@ -86,12 +87,13 @@ function editAppointment() {
             const name = data.name;
             const from = data.from;
             const to = data.to;
+            const withWhom = data.with;
             const card = document.getElementById(id);
             if (card) {
                 card.remove();
             }
             if (isTodays(currentDay, data)) {
-                getAppointmentCard(id, name, description, from, to);
+                getAppointmentCard(id, name, description, from, to, withWhom);
             }
         }).catch(error => {
             console.log(error.message);

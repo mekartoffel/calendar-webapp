@@ -49,13 +49,19 @@ function openEditDialog(evt) {
     db.collection("appointments").doc(parent.id).get().then(doc => {
         const data = doc.data();
         const description = data.description;
-        const name = data.name;
+        const withWhom = data.with;
         const from = data.from;
         const to = data.to;
         document.getElementById("inputDescriptionEdit").value = description;
         document.getElementById("inputTimeFromEdit").value = from.join(' ');
         document.getElementById("inputTimeToEdit").value = to.join(' ');
         document.getElementById("butDialogSaveEdit").value = doc.id;
+        [...document.getElementsByClassName("withWhomEdit")].map(who => {
+            console.log(who.value);
+            if (withWhom.includes(who.value)) {
+                who.checked = true;
+            }
+        });
     }).catch(error => {
         console.log(error.message);
     })
