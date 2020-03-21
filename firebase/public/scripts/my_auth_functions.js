@@ -35,6 +35,22 @@ function logIn() {
         });
 }
 
+function logOut() {
+    firebase.auth().signOut()
+        .then(() => {
+            // Sign-out successful.
+            toggleLoginDialog();
+            document.getElementById("butAdd").hidden = true;
+            let eis = document.getElementsByClassName("event_item");
+            eis.forEach(element => {
+                element.remove();
+            });
+        })
+        .catch((error) => {
+            // An error happened
+        });
+}
+
 firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
         // User is signed in.

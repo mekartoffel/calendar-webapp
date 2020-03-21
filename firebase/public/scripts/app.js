@@ -25,25 +25,12 @@ function addAppointment() {
   toggleAddDialog();
   // Get the selected city
   console.log('add....')
-  const select = document.getElementById("selectAppointmentToAdd");
-  const selected = select.options[select.selectedIndex];
   const inputDescription = document.getElementById("inputDescription").value;
   const inputTimeFrom = document.getElementById("inputTimeFrom").value;
   const inputTimeTo = document.getElementById("inputTimeTo").value;
-  pushAppointment(inputDescription, inputTimeFrom, inputTimeTo);
+  const withWhom = [...document.getElementsByClassName("withWhom")].filter(who => who.checked).map(who => who.value)
+  pushAppointment(inputDescription, inputTimeFrom, inputTimeTo, withWhom);
   getAppointments(currentDay);
-
-  const geo = selected.value;
-  const label = selected.textContent;
-  const location = { label: label, geo: geo };
-  // Create a new card & get the weather data from the server
-  const card = getForecastCard(location);
-  getForecastFromNetwork(geo).then(forecast => {
-    renderForecast(card, forecast);
-  });
-  // Save the updated list of selected cities.
-  calendarApp.selectedLocations[geo] = location;
-  saveLocationList(calendarApp.selectedLocations);
 }
 
 /**
@@ -53,7 +40,7 @@ function addAppointment() {
  * @param {Object} id ID
  * @return {Element} The element for the calendar.
  */
-function getAppointmentCard(id, name, description, from, to) {
+function getAppointmentCard(id, name, description, from, to, withWhom) {
   const card = document.getElementById(id);
   if (card) {
     return card;
@@ -66,6 +53,15 @@ function getAppointmentCard(id, name, description, from, to) {
     newCard.querySelector(".ei_Title").textContent = `${from[0]} ${from[1]} Uhr bis ${to[0]} ${to[1]} Uhr`;
   }
   newCard.querySelector(".ei_name").textContent = `${name}`;
+  if (withWhom.length > 0) {
+    newCard.querySelector(".ei_name").textContent += ` mit `;
+    withWhom.forEach(who => {
+      if (who !== withWhom[0]) {
+        newCard.querySelector(".ei_name").textContent += `, `
+      }
+      newCard.querySelector(".ei_name").textContent += `${who}`
+    })
+  }
   newCard.querySelector(".ei_description").textContent = `${description}`;
   newCard.setAttribute("id", id);
   newCard
@@ -84,14 +80,18 @@ function getAppointmentCard(id, name, description, from, to) {
  *
  * @param {Event} evt
  */
-function removeAppointment(evt) {
+function removeAppointmentCard(evt) {
   const parent = evt.srcElement.parentElement;
   parent.remove();
   console.log('remove...');
   if (calendarApp.selectedAppointments[parent.id]) {
     delete calendarApp.selectedAppointments[parent.id];
   }
-  deleteAppointment(parent.id);
+}
+
+function removeAppointment(evt) {
+  removeAppointmentCard(evt);
+  deleteAppointment(evt.srcElement.parentElement.id);
 }
 
 
@@ -329,6 +329,9 @@ function init() {
   document
     .getElementById("butDialogLogin")
     .addEventListener("click", logIn);
+  document
+    .getElementById("butLogout")
+    .addEventListener("click", logOut);
   document
     .getElementById("butDialogSignup")
     .addEventListener("click", signUp);

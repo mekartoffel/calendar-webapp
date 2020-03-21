@@ -1,9 +1,8 @@
-function pushAppointment(description, from, to) {
-    console.log(`${from}-${to}`);
-    console.log(`${currentUser.email}`)
+function pushAppointment(description, from, to, withWhom) {
     db.collection("appointments").add({
         email: currentUser.email,
         name: currentUser.displayName,
+        with: withWhom,
         description: description,
         from: from.split(' '),
         to: to.split(' ')
@@ -47,9 +46,9 @@ function getAppointments(d) {
             const name = data.name;
             const from = data.from;
             const to = data.to;
-            console.log(`${id}: ${description}`);
+            const withWhom = data.with;
             if (isTodays(d, data)) {
-                getAppointmentCard(id, name, description, from, to);
+                getAppointmentCard(id, name, description, from, to, withWhom);
             } else {
                 const card = document.getElementById(id);
                 if (card) {
@@ -70,10 +69,34 @@ function deleteAppointment(id) {
     })
 }
 
-function editAppointment(id) {
-    db.collection("appointments").doc(id).update({
-        description: description,
-        from: from.split(' '),
-        to: to.split(' ')
+function editAppointment() {
+    const inputDescription = document.getElementById("inputDescriptionEdit").value;
+    const inputTimeFrom = document.getElementById("inputTimeFromEdit").value;
+    const inputTimeTo = document.getElementById("inputTimeToEdit").value;
+    db.collection("appointments").doc(document.getElementById("butDialogSaveEdit").value).update({
+        description: inputDescription,
+        from: inputTimeFrom.split(' '),
+        to: inputTimeTo.split(' ')
+    }).then(() => {
+        toggleEditDialog();
+        db.collection("appointments").doc(document.getElementById("butDialogSaveEdit").value).get().then(doc => {
+            const data = doc.data();
+            const id = doc.id;
+            const description = data.description;
+            const name = data.name;
+            const from = data.from;
+            const to = data.to;
+            const card = document.getElementById(id);
+            if (card) {
+                card.remove();
+            }
+            if (isTodays(currentDay, data)) {
+                getAppointmentCard(id, name, description, from, to);
+            }
+        }).catch(error => {
+            console.log(error.message);
+        })
+    }).catch((error) => {
+        console.log(error.message);
     });
 }

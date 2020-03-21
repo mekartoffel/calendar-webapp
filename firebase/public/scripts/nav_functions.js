@@ -44,7 +44,7 @@ function toggleEditDialog() {
 }
 
 function openEditDialog(evt) {
-    calendarApp.editDialogContainer.classList.toggle("visible");
+    toggleEditDialog();
     const parent = evt.srcElement.parentElement;
     db.collection("appointments").doc(parent.id).get().then(doc => {
         const data = doc.data();
@@ -52,10 +52,10 @@ function openEditDialog(evt) {
         const name = data.name;
         const from = data.from;
         const to = data.to;
-        console.log(`${doc.id} ${name}`)
         document.getElementById("inputDescriptionEdit").value = description;
         document.getElementById("inputTimeFromEdit").value = from.join(' ');
         document.getElementById("inputTimeToEdit").value = to.join(' ');
+        document.getElementById("butDialogSaveEdit").value = doc.id;
     }).catch(error => {
         console.log(error.message);
     })

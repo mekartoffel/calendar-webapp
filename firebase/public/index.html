@@ -40,7 +40,7 @@
         <a href="#">Woche</a>
         <a href="#">Monat</a>
         <a href="#" onclick="openSettings()">Einstellungen</a>
-        <a class="logout">Ausloggen</a>
+        <a id="butLogout">Ausloggen</a>
     </div>
     <main class="main">
         <div class="container">
@@ -120,6 +120,45 @@
         <div class="ei_Copy ei_description"><span class="value"> </span></div>
     </div>
 
+    <div id="editDialogContainer" class="dialogContainer">
+        <div class="dialog">
+            <div class="dialog-title">Termin ändern</div>
+            <div class="dialog-body">
+                <div id="withWhomEdit">
+                    <span>Mit wem unternimmst du was? - Mit ...</span></br>
+                    <input class="withWhomEdit" type="checkbox" name="rel1" value="Ba" /> Ba
+                    <input class="withWhomEdit" type="checkbox" name="rel2" value="Bu" /> Bu
+                    <input class="withWhomEdit" type="checkbox" name="rel3" value="Yin" /> Yin
+                    <input class="withWhomEdit" type="checkbox" name="rel4" value="Tng" /> Tng
+                    <input class="withWhomEdit" type="checkbox" name="rel5" value="Wei" /> Wei
+                    <input class="withWhomEdit" type="checkbox" name="other" value="Anderen" /> Anderen
+                </div>
+                <span>Was hast du vor?</span>
+                <div>
+                    <input id="inputDescriptionEdit" type="text"></input>
+                </div>
+                <span>Von:</span>
+                <div id="datetimepickerFromEdit" class="input-append date">
+                    <input id="inputTimeFromEdit" type="text"></input>
+                    <span class="add-on">
+                        <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+                    </span>
+                </div>
+                <span>Bis:</span>
+                <div id="datetimepickerToEdit" class="input-append date">
+                    <input id="inputTimeToEdit" type="text"></input>
+                    <span class="add-on">
+                        <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="dialog-buttons">
+                <button id="butDialogCancelEdit" class="button">Abbruch</button>
+                <button id="butDialogSaveEdit" class="button">Änderungen speichern</button>
+            </div>
+        </div>
+    </div>
+
     <div id="settingsDialogContainer" class="dialogContainer">
         <div class="dialog">
             <div class="dialog-title">Einstellungen</div>
@@ -167,17 +206,15 @@
         <div class="dialog">
             <div class="dialog-title">Neuen Termin hinzufügen</div>
             <div class="dialog-body">
-                <select id="selectAppointmentToAdd" aria-label="Appointment to add">
-                    <option value="28.6472799,76.8130727">Dehli, India</option>
-                    <option value="-5.7759362,106.1174957">Jakarta, Indonesia</option>
-                    <option value="51.5287718,-0.2416815">London, UK</option>
-                    <option value="40.6976701,-74.2598666">New York, USA</option>
-                    <option value="48.8589507,2.2770202">Paris, France</option>
-                    <option value="-64.8251018,-63.496847">Port Lockroy, Antarctica</option>
-                    <option value="37.757815,-122.5076401">San Francisco, USA</option>
-                    <option value="31.2243085,120.9162955">Shanghai, China</option>
-                    <option value="35.6735408,139.5703032">Tokyo, Japan</option>
-                </select>
+                <div id="withWhom">
+                    <span>Mit wem unternimmst du was? - Mit ...</span></br>
+                    <input class="withWhom" type="checkbox" name="rel1" value="Ba" /> Ba
+                    <input class="withWhom" type="checkbox" name="rel2" value="Bu" /> Bu
+                    <input class="withWhom" type="checkbox" name="rel3" value="Yin" /> Yin
+                    <input class="withWhom" type="checkbox" name="rel4" value="Tng" /> Tng
+                    <input class="withWhom" type="checkbox" name="rel5" value="Wei" /> Wei
+                    <input class="withWhom" type="checkbox" name="other" value="Anderen" /> Anderen
+                </div>
                 <span>Was hast du vor?</span>
                 <div>
                     <input id="inputDescription" type="text"></input>
@@ -214,11 +251,7 @@
     <script type="text/javascript" src="scripts/extern/bootstrap-datetimepicker-de.js">
     </script>
     <script type="text/javascript">
-        $('#datetimepickerFrom').datetimepicker({
-            format: 'dd.MM.yyyy hh:mm',
-            locale: 'de'
-        });
-        $('#datetimepickerTo').datetimepicker({
+        $('.input-append').datetimepicker({
             format: 'dd.MM.yyyy hh:mm',
             locale: 'de'
         });
